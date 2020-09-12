@@ -116,7 +116,7 @@ const buildPortrait = (portrait) => {
   div.className = 'card'
   div.id = portrait.id
   div.innerHTML = `
-        <i class="far fa-window-close fa-3x" id="delete"></i>
+        <i class="far fa-window-close fa-1x" id="delete"></i>
         <img src= ${portrait.attributes.img_url} class="profile" alt="Avatar" >
         <div class="container">
         <h5 class='description'>Caption: ${portrait.attributes.description}</h5>
@@ -234,27 +234,34 @@ const buildPortrait = (portrait) => {
     
     function listenForEditComment(portrait){
       const currentCard = document.getElementById(portrait.id)
-      let editBtn = currentCard.querySelector('button.edit-button')
-      console.log(editBtn)
-      editBtn.addEventListener('click', (e)=> {
-          patchEditComments(portrait, e)
-        // console.log(portrait, e)
+      let parentUl = currentCard.querySelector('ul')
+      parentUl.addEventListener('click', (e) => {
+
+        if(e.target.className === 'fas fa-pen-square'){
+          patchEditComments(portrait)
+        } 
       })
     }
 
-  
-    function patchEditComments(e){
-      let getComments = e.attributes.comments
-      getComments.forEach(comment => {
-        comment.content
+    // event delegation on one whole div or put 
+    // check to see if some click on specific button (edit)event listener in each one
+    // 
+    function patchEditComments(portrait){
+      // console.log(portrait)
+      const iterateComments = portrait.attributes.comments
+      iterateComments.map(comment => {
+        return comment.content[0]
+        debugger
+
         console.log(comment)
       })
 
-      let commentPrompt = prompt("Edit Comment Here", e.attributes.comments[0].content)
-      let data = {
-        content: commentPrompt
-      }
+      // let commentPrompt = prompt("Edit Comment Here", iterateComments)
+      // let data = {
+      //   content: iterateComments
+      // }
       // debugger
+
       fetch(`http://localhost:3000/comments/${e.id}`,{
         method: 'PATCH',
         headers: {
@@ -290,12 +297,7 @@ function addNewPortrait(e) {
   .then(res => res.json())
   .then(json => {
     console.log(json)
-    buildPortrait(json)
+    // buildPortrait(json)
   })
 }
-
-
-
-
-
 
