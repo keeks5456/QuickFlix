@@ -153,7 +153,7 @@ const buildPortrait = (portrait) => {
 
     })
   }
-//patch request likes
+
   const patchLikes = (portrait) => {
     data = {
       like: portrait.attributes.like += 1,
@@ -173,7 +173,7 @@ const buildPortrait = (portrait) => {
 
     })
   }
-//create comments
+
   function commentSection(portrait){
       const newUl = document.createElement('ul')
       newUl.className = 'comments'
@@ -188,13 +188,12 @@ const buildPortrait = (portrait) => {
         editBtn.innerHTML = `
         <i class="fas fa-pen-square"></i>` 
         li.appendChild(editBtn)
-
       })
       const currentCard= document.getElementById(portrait.id)
       const description = currentCard.querySelector('.description')
       description.after(newUl)
     }
-//event listen for comments
+
     function listenForComment(portrait){
       const portraitComment = document.getElementById(portrait.id)
       const commentForm = portraitComment.querySelector('.comment-form')
@@ -204,7 +203,7 @@ const buildPortrait = (portrait) => {
         commentForm.reset()
       })
     }
-//fetch comments
+
     function postComments(e){
       console.log()
       data = {
@@ -232,10 +231,6 @@ const buildPortrait = (portrait) => {
 
       })
     }
-
-    // edit the comments here
-    // iterate comments here
-    // query elementbyClass, iterate over
     
     function listenForEditComment(portrait){
       const currentCard = document.getElementById(portrait.id)
@@ -257,6 +252,7 @@ const buildPortrait = (portrait) => {
       iterateComments.map(comment => {
         return comment.content[0]
         debugger
+
         console.log(comment)
       })
 
@@ -265,26 +261,24 @@ const buildPortrait = (portrait) => {
       //   content: iterateComments
       // }
       // debugger
-      // fetch(`http://localhost:3000/comments/${e.id}`,{
-      //   method: 'PATCH',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(data)
-      // })
-      // .then(res => res.json())
-      // .then(json => {
-      //   console.log(json)
-      //   console.log(e)
-      //   const li = document.getElementById(json.content)
- 
-  
-      // })
+
+      fetch(`http://localhost:3000/comments/${e.id}`,{
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+        console.log(e)
+        const li = document.getElementById(json.content)
+      })
     }
     
-  // create a post
-function addNewPortrait(e) {
 
+function addNewPortrait(e) {
   console.log(e)
   let portrait = {
     img_url: e.target[0].value,
